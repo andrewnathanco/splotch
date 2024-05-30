@@ -1,2 +1,2 @@
-# splotch
-Splotch is a daily puzzle game about colors
+# challenge
+Challenge is a word game that forces you to try and make the longest word possible.
