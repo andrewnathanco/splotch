@@ -1,4 +1,5 @@
-import { createEffect } from "solid-js";
+import { Motion } from "solid-motionone";
+import { mix } from "../../util/colors";
 import { useGame } from "../game/service";
 import { animate } from "motion";
 
@@ -7,23 +8,34 @@ export function Board() {
 
   return (
     <>
-      <div
-        style={{ "background-color": game.color }}
-        class="w-full rounded-md h-24"
-      ></div>
+      <div class="flex flex-col space-y-2">
+        <div
+          style={{ "background-color": game?.color }}
+          class="w-full rounded-md h-24"
+        ></div>
+        {game?.correct?.length >= 1 ? <Correct /> : <></>}
+      </div>
       <div class="w-full flex flex-col items-center">
         <ul class="flex flex-wrap gap-2 w-full justify-center">
           {game.all?.map((color) => {
-            const isSelected = game.selected.includes(color);
-            const canSelect = game.selected.length < game.numcorrect;
+            const isSelected = game?.selected?.includes(color);
+            const isCorrect = game.correct?.includes(color);
+            const gameOver = game?.guesses?.find(
+              (guess) => guess == game.numcorrect
+            );
+            const canSelect = game.selected?.length < game.numcorrect;
 
             return (
               <li
                 onClick={() => {
+                  if (gameOver) {
+                    return;
+                  }
+
                   if (isSelected) {
                     setGame(
                       "selected",
-                      game.selected.filter((col) => col != color)
+                      game.selected?.filter((col) => col != color)
                     );
                     return;
                   }
@@ -37,11 +49,15 @@ export function Board() {
                     return;
                   }
                 }}
-                style={{ "background-color": color }}
-                classList={{
-                  "shrink-lg": !!game.selected.length && !isSelected,
+                style={{
+                  "background-color": isCorrect ? "transparent" : color,
+                  "border-color": isCorrect ? color : "transparent",
                 }}
-                class="li h-20 w-20 rounded-md cursor-pointer"
+                classList={{
+                  "cursor-pointer": !gameOver,
+                  "shrink-lg": !!game.selected?.length && !isSelected,
+                }}
+                class="h-20 w-20 cursor-pointer color border-8 rounded-md"
                 id={`c${color.substring(1)}`}
               ></li>
             );
@@ -52,27 +68,89 @@ export function Board() {
   );
 }
 
+export function Correct() {
+  const [game, setGame] = useGame();
+
+  const color = () => mix(game.correct || "");
+
+  return (
+    <div
+      style={{ "background-color": color() }}
+      class="h-12 w-full rounded-md"
+    ></div>
+  );
+}
+
+export function Guesses() {
+  const [game, setGame] = useGame();
+  return (
+    <ul class="flex space-x-2 justify-center">
+      {game.guesses?.map((guess) => {
+        return (
+          <li
+            class="h-6 w-4 rounded-full"
+            classList={{
+              "dark:bg-green-500 bg-green-700": guess == game.numcorrect,
+              "dark:bg-red-500 bg-red-700": guess == 0,
+              "dark:bg-yellow-500 bg-yellow-600":
+                guess >= 1 && guess < game.numcorrect,
+            }}
+          ></li>
+        );
+      })}
+    </ul>
+  );
+}
+
+export function Guess() {
+  return <div class="h-4 w-4 bg-gray-500 rounded-full"></div>;
+}
+
+export function Buttons() {
+  const [game, setGame] = useGame();
+
+  const gameOver = () => !!game.guesses?.find((g) => g == game.numcorrect);
+
+  return <>{gameOver() ? <ShareButton /> : <SubmitButton />}</>;
+}
+
+export function ShareButton() {
+  const [game, setGame] = useGame();
+
+  return (
+    <div class="w-full">
+      <button
+        onClick={() => {}}
+        class="w-full rounded-md p-4 text-gray-100 dark:text-black dark:bg-green-600 bg-green-800"
+        id="submit"
+      >
+        Share
+      </button>
+    </div>
+  );
+}
+
 export function SubmitButton() {
   const [game, setGame] = useGame();
 
-  const canSubmit = () => game.selected?.length == game.numcorrect;
+  const canSubmit = () => game?.selected?.length == game.numcorrect;
 
   return (
     <div class="w-full">
       <button
         onClick={() => {
-          game.selected.forEach((color) => {
-            let animation = animate(`#c${color.substring(1)}`, {
-              backgroundColor: game.ingredients.includes(color)
-                ? "green"
-                : "red",
-            });
+          let correct = 0;
+          game?.selected?.forEach((color) => {
+            if (game?.ingredients.includes(color)) {
+              if (!game.correct.includes(color)) {
+                setGame("correct", [...game?.correct, color]);
+              }
 
-            setTimeout(() => {
-              console.log("stopping");
-              animation.cancel();
-            }, 1000);
+              correct++;
+            }
           });
+
+          setGame("guesses", [...game?.guesses, correct]);
         }}
         disabled={!canSubmit()}
         classList={{
@@ -80,8 +158,9 @@ export function SubmitButton() {
           "bg-gray-500 dark:bg-gray-400": !canSubmit(),
         }}
         class="w-full rounded-md p-4 text-gray-100 dark:text-black"
+        id="submit"
       >
-        Submit ({game.selected?.length} of {game.numcorrect})
+        Submit ({game.selected?.length} of {game?.numcorrect})
       </button>
     </div>
   );

@@ -1,0 +1,7 @@
+- [x] make the correct have a stroke but no fill
+- [ ] indicate which one's you've selected
+- [ ] make the rounds
+- [ ] deploy
+- [ ] set versioning
+- [ ] create sharing
+- [x] fix coloring

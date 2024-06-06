@@ -8,26 +8,32 @@ export interface Game {
   numcorrect: number;
   color: string;
   ingredients: string[];
+  correct: string[];
   all: string[];
   selected: string[];
+  guesses: number[];
 }
 
 export function gamekey() {
   const now: Date = new Date();
   // starting date
-  const specificDate: Date = new Date(2024, 4, 24, 0, 0, 0);
+  const specificDate: Date = new Date(2024, 4, 25, 0, 0, 0);
   const duration: number =
     (now.getTime() - specificDate.getTime()) / (1000 * 60 * 60 * 24);
 
-  return Math.floor(duration);
+  // return Math.floor(duration);
+  return 186;
 }
 
 export function today(gamekey: number): Game {
-  const numcorrect = 4;
-  const { base, correct, all } = options(gamekey, numcorrect, 16);
+  const numcorrect = 3;
+  const noise = 0.8;
+  const { base, correct, all } = options(gamekey, numcorrect, 16, noise);
 
   return {
     gamekey,
+    guesses: [],
+    correct: [],
     color: base,
     ingredients: correct,
     numcorrect,

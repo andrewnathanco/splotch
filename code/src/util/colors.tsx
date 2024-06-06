@@ -40,11 +40,35 @@ function rgbToHex(color: RGBColor): string {
     .toUpperCase()}`;
 }
 
-function randomPart(rng: PRNG, num: number, noise: number): number {
-  let min = num - noise;
-  let max = num + noise;
+function randomPart(
+  rng: PRNG,
+  num: number,
+  noise: number,
+  dir: number | null = null
+): number {
+  // minimum avaiable choise from the number
+  let min = Math.max(num - noise, 0);
 
-  return Math.min(Math.floor(rng() * (max - min) + min), 255);
+  // maximum avaiable choise from the number
+  let max = Math.min(num + noise, 255);
+
+  // go above
+  let rangebottom = min;
+  let rangetop = max;
+  if (dir == 0) {
+    // range bottom
+    rangebottom = min;
+    rangetop = num;
+  }
+
+  if (dir == 1) {
+    rangebottom = num;
+    rangetop = max;
+  }
+
+  let opts = rangetop - rangebottom;
+  let ans = Math.floor(rng() * opts + rangebottom);
+  return ans;
 }
 
 interface ColorData {
@@ -104,10 +128,13 @@ function divide(
 
   // let's populate the first n - 1 with random colors within an acceptable average range
   for (let i = 0; i < numColors - 1; i++) {
+    let dir = i % 2;
     let color: RGBColor = { r: 0, g: 0, b: 0 };
     for (let datum of [rData, gData, bData]) {
       // get options for each data (we need to calculate the last one)
-      color[datum.key] = Math.floor(randomPart(rng, datum.num, datum.diff));
+      color[datum.key] = Math.floor(
+        randomPart(rng, datum.num, datum.diff, dir)
+      );
     }
 
     colors.push(color);
@@ -151,10 +178,18 @@ function mix(hexColors: string[]): string {
 }
 
 function randomColor(rng: PRNG, shrink: number): string {
+  let rangetop = 255 - shrink;
+  let rangebottom = 0 + shrink;
+  let opts = rangetop - rangebottom;
+
+  let r = Math.floor(rangebottom + rng() * opts);
+  let b = Math.floor(rangebottom + rng() * opts);
+  let g = Math.floor(rangebottom + rng() * opts);
+
   return rgbToHex({
-    r: Math.floor(shrink + rng() * (255 - shrink)),
-    g: Math.floor(shrink + rng() * (255 - shrink)),
-    b: Math.floor(shrink + rng() * (255 - shrink)),
+    r,
+    g,
+    b,
   });
 }
 
@@ -168,15 +203,16 @@ function options(
   gameKey: number,
   numCorrect: number,
   total: number,
-  noise: number = 1
+  noise: number = 1,
+  variance: number = 100
 ): GameData {
-  noise = Math.floor(noise * 255);
+  noise = Math.ceil(noise * 255);
 
   const rng = seedrandom(gameKey.toString());
-  const todayColor = randomColor(rng, 50);
+  const todayColor = randomColor(rng, variance);
 
   const colOpt: ("r" | "g" | "b")[] = ["r", "g", "b"];
-  const options: string[] = []
+  const options: string[] = [];
   const correctColors = divide(rng, todayColor, numCorrect);
   const all = [...correctColors];
 
@@ -204,7 +240,10 @@ function options(
     const baseRgb = hexToRgb(baseColor);
     const newColor: RGBColor = { r: 0, g: 0, b: 0 };
     for (let col of colOpt) {
-      newColor[col] = Math.floor(rng() * noise) + Math.min(baseRgb[col], 255);
+      newColor[col] = Math.min(
+        Math.floor(rng() * noise) + Math.min(baseRgb[col], 255),
+        255
+      );
     }
 
     all.push(rgbToHex(newColor));
