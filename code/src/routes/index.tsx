@@ -22,7 +22,7 @@ export default function Home() {
   const [game, setGame] = useGame();
 
   createEffect(() => {
-    if (game.gamekey != gamekey()) {
+    if (game.gamekey && game.gamekey != gamekey()) {
       localStorage.removeItem("splotch_game");
       setGame(today(gamekey()));
     }

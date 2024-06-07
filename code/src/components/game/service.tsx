@@ -21,7 +21,6 @@ export function gamekey() {
   const duration: number =
     (now.getTime() - specificDate.getTime()) / (1000 * 60 * 60 * 24);
 
-  return 698;
   return Math.floor(duration);
 }
 
