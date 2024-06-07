@@ -89,7 +89,7 @@ export function Correct() {
 export function Guesses() {
   const [game, setGame] = useGame();
   return (
-    <ul class="flex space-x-2 justify-center p-2">
+    <ul class="flex space-x-2 justify-center">
       {game.guesses?.map((guess) => {
         return (
           <li
