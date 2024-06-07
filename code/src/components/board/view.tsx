@@ -1,14 +1,12 @@
-import { Motion } from "solid-motionone";
 import { mix } from "../../util/colors";
-import { useGame } from "../game/service";
-import { animate } from "motion";
+import { Game, useGame } from "../game/service";
 
 export function Board() {
   const [game, setGame] = useGame();
 
   return (
     <>
-      <div class="flex flex-col space-y-2">
+      <div class="flex space-x-2">
         <div
           style={{ "background-color": game?.color }}
           class="w-full rounded-md h-24"
@@ -74,25 +72,23 @@ export function Correct() {
   const color = () => mix(game.correct || "");
 
   return (
-    <div
-      style={{ "background-color": color() }}
-      class="h-12 w-full rounded-md"
-    ></div>
+    <div style={{ "background-color": color() }} class="w-32 rounded-md"></div>
   );
 }
 
 export function Guesses() {
   const [game, setGame] = useGame();
   return (
-    <ul class="flex space-x-2 justify-center">
+    <ul class="flex space-x-2 justify-center p-2">
       {game.guesses?.map((guess) => {
         return (
           <li
             class="h-6 w-4 rounded-full"
             classList={{
-              "dark:bg-green-500 bg-green-700": guess == game.numcorrect,
-              "dark:bg-red-500 bg-red-700": guess == 0,
-              "dark:bg-yellow-500 bg-yellow-600":
+              "dark:bg-killarney-500 bg-killarney-700":
+                guess == game.numcorrect,
+              "dark:bg-thorns-500 bg-thorns-700": guess == 0,
+              "dark:bg-energy-500 bg-energy-600":
                 guess >= 1 && guess < game.numcorrect,
             }}
           ></li>
@@ -114,14 +110,45 @@ export function Buttons() {
   return <>{gameOver() ? <ShareButton /> : <SubmitButton />}</>;
 }
 
+function getShare(game: Game) {
+  const shareURL = `${import.meta.env.VITE_BASE_URL}`;
+
+  let score = "";
+
+  game.guesses.forEach((guess) => {
+    switch (guess) {
+      case 0:
+        score += "🟥";
+      case game.numcorrect:
+        score += "🟩";
+      default:
+        score += "🟨";
+        break;
+    }
+  });
+
+  return [`Splotch #${game.gamekey}\n${score}`, shareURL];
+}
+
 export function ShareButton() {
   const [game, setGame] = useGame();
 
   return (
     <div class="w-full">
       <button
-        onClick={() => {}}
-        class="w-full rounded-md p-4 text-gray-100 dark:text-black dark:bg-green-600 bg-green-800"
+        onClick={() => {
+          const [text, url] = getShare(game);
+
+          try {
+            navigator?.share({
+              text,
+              url,
+            });
+          } catch {
+            navigator?.clipboard?.writeText(`${text}\n${url}`);
+          }
+        }}
+        class="w-full rounded-md p-4 text-gray-100 dark:text-black dark:bg-killarney-500 bg-killarney-600"
         id="submit"
       >
         Share
@@ -151,6 +178,10 @@ export function SubmitButton() {
           });
 
           setGame("guesses", [...game?.guesses, correct]);
+          setGame(
+            "selected",
+            game.selected.filter((sel) => game.ingredients.includes(sel))
+          );
         }}
         disabled={!canSubmit()}
         classList={{

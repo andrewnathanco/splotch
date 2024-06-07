@@ -22,7 +22,7 @@ export function gamekey() {
     (now.getTime() - specificDate.getTime()) / (1000 * 60 * 60 * 24);
 
   // return Math.floor(duration);
-  return 186;
+  return 99;
 }
 
 export function today(gamekey: number): Game {

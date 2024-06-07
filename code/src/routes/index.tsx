@@ -17,12 +17,8 @@ import {
 import { GameInfo } from "../components/game/view";
 import { Theme, ThemeToggler, getThemeIcon } from "../util/theme";
 
-const boardSize = 16;
-
 export default function Home() {
   const [game, setGame] = useGame();
-
-  const gameOver = () => !!game.guesses?.find((g) => g == g);
 
   createEffect(() => {
     if (game.gamekey != gamekey()) {
