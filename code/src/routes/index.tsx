@@ -7,12 +7,13 @@ import {
 } from "../components/game/service";
 import { Meta } from "@solidjs/meta";
 import {
-  Board,
+  Colors,
   Guesses,
   Correct,
   ShareButton,
   SubmitButton,
   Buttons,
+  Board,
 } from "../components/board/view";
 import { GameInfo } from "../components/game/view";
 import { Theme, ThemeToggler, getThemeIcon } from "../util/theme";
@@ -37,8 +38,6 @@ export default function Home() {
               <ThemeToggler />
             </div>
             <Board />
-            <Guesses />
-            <Buttons />
           </div>
         </main>
       </GameProvider>

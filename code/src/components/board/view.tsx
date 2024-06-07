@@ -2,10 +2,20 @@ import { mix } from "../../util/colors";
 import { Game, useGame } from "../game/service";
 
 export function Board() {
+  const [game, _] = useGame();
+  return (
+    <div class="flex flex-col space-y-2">
+      <Colors />
+      {game.guesses.length == 0 ? <></> : <Guesses />}
+      <Buttons />
+    </div>
+  );
+}
+export function Colors() {
   const [game, setGame] = useGame();
 
   return (
-    <>
+    <div class="flex flex-col space-y-4">
       <div class="flex space-x-2">
         <div
           style={{ "background-color": game?.color }}
@@ -62,7 +72,7 @@ export function Board() {
           })}
         </ul>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -103,7 +113,7 @@ export function Guess() {
 }
 
 export function Buttons() {
-  const [game, setGame] = useGame();
+  const [game, _] = useGame();
 
   const gameOver = () => !!game.guesses?.find((g) => g == game.numcorrect);
 
@@ -119,8 +129,10 @@ function getShare(game: Game) {
     switch (guess) {
       case 0:
         score += "🟥";
+        break;
       case game.numcorrect:
         score += "🟩";
+        break;
       default:
         score += "🟨";
         break;
@@ -131,7 +143,7 @@ function getShare(game: Game) {
 }
 
 export function ShareButton() {
-  const [game, setGame] = useGame();
+  const [game, _] = useGame();
 
   return (
     <div class="w-full">

@@ -17,12 +17,12 @@ export interface Game {
 export function gamekey() {
   const now: Date = new Date();
   // starting date
-  const specificDate: Date = new Date(2024, 4, 25, 0, 0, 0);
+  const specificDate: Date = new Date(2024, 4, 24, 0, 0, 0);
   const duration: number =
     (now.getTime() - specificDate.getTime()) / (1000 * 60 * 60 * 24);
 
-  // return Math.floor(duration);
-  return 99;
+  return 698;
+  return Math.floor(duration);
 }
 
 export function today(gamekey: number): Game {

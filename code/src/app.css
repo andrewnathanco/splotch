@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 * {
-  @apply dark:bg-gray-900 dark:text-gray-200 bg-white text-black;
+  @apply dark:bg-woodsmoke-900 dark:text-gray-200 bg-woodsmoke-100 text-black;
   font-family: Outfit;
   font-weight: 700;
 }
