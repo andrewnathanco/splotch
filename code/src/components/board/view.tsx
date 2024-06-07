@@ -4,7 +4,14 @@ import { Game, useGame } from "../game/service";
 export function Board() {
   const [game, _] = useGame();
   return (
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col space-y-4">
+      <div class="flex space-x-2">
+        <div
+          style={{ "background-color": game?.color }}
+          class="flex-1 w-full rounded-md h-24"
+        ></div>
+        {game?.correct?.length >= 1 ? <Correct /> : <></>}
+      </div>
       <Colors />
       {game.guesses.length == 0 ? <></> : <Guesses />}
       <Buttons />
@@ -16,13 +23,6 @@ export function Colors() {
 
   return (
     <div class="flex flex-col space-y-4">
-      <div class="flex space-x-2">
-        <div
-          style={{ "background-color": game?.color }}
-          class="w-full rounded-md h-24"
-        ></div>
-        {game?.correct?.length >= 1 ? <Correct /> : <></>}
-      </div>
       <div class="w-full flex flex-col items-center">
         <ul class="flex flex-wrap gap-2 w-full justify-center">
           {game.all?.map((color) => {
@@ -82,7 +82,7 @@ export function Correct() {
   const color = () => mix(game.correct || "");
 
   return (
-    <div style={{ "background-color": color() }} class="w-32 rounded-md"></div>
+    <div style={{ "background-color": color() }} class="w-24 rounded-md"></div>
   );
 }
 
@@ -160,7 +160,7 @@ export function ShareButton() {
             navigator?.clipboard?.writeText(`${text}\n${url}`);
           }
         }}
-        class="w-full rounded-md p-4 text-gray-100 dark:text-black dark:bg-killarney-500 bg-killarney-600"
+        class="w-full rounded-md p-4 text-woodsmoke-50 dark:text-woodsmoke-950 dark:bg-killarney-500 bg-killarney-600"
         id="submit"
       >
         Share
@@ -197,8 +197,8 @@ export function SubmitButton() {
         }}
         disabled={!canSubmit()}
         classList={{
-          "bg-gray-800 dark:bg-white": canSubmit(),
-          "bg-gray-500 dark:bg-gray-400": !canSubmit(),
+          "bg-dove-900 dark:bg-dove-100": canSubmit(),
+          "bg-dove-500 dark:bg-dove-300": !canSubmit(),
         }}
         class="w-full rounded-md p-4 text-gray-100 dark:text-black"
         id="submit"
