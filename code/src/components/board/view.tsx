@@ -139,7 +139,7 @@ function getShare(game: Game) {
     }
   });
 
-  return [`Splotch #${game.gamekey}\n${score}`, shareURL];
+  return [`Splotch #${game.gamekey}\n\n${score}`, shareURL];
 }
 
 export function ShareButton() {
