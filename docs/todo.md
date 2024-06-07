@@ -1,6 +1,1 @@
-- [x] make the correct have a stroke but no fill
-- [x] fix coloring
-- [ ] deploy
-- [ ] limit guesses
-- [ ] create sharing
-- [ ] version
+- [ ] change color of share button?
