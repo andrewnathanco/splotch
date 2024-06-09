@@ -1,11 +1,18 @@
-import { createSignal } from "solid-js";
-import { useGame } from "./service";
+import { createEffect, createSignal } from "solid-js";
+import { gamekey, today, useGame } from "./service";
 
 export function GameInfo() {
-  const [game, _] = useGame();
+  const [game, setGame] = useGame();
   const [version, __] = createSignal<string>(
     import.meta.env.VITE_VERSION ?? "v0.1.0"
   );
+
+  createEffect(() => {
+    if (game.gamekey && game.gamekey != gamekey()) {
+      localStorage.removeItem("splotch_game");
+      setGame(today(gamekey()));
+    }
+  });
 
   return (
     <div class="flex flex-col">

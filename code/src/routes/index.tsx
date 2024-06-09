@@ -17,17 +17,9 @@ import {
 } from "../components/board/view";
 import { GameInfo } from "../components/game/view";
 import { Theme, ThemeToggler, getThemeIcon } from "../util/theme";
+import { makePersisted } from "@solid-primitives/storage";
 
 export default function Home() {
-  const [game, setGame] = useGame();
-
-  createEffect(() => {
-    if (game.gamekey && game.gamekey != gamekey()) {
-      localStorage.removeItem("splotch_game");
-      setGame(today(gamekey()));
-    }
-  });
-
   return (
     <>
       <GameProvider>
