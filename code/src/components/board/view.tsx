@@ -139,7 +139,11 @@ function getShare(game: Game) {
     }
   });
 
-  return [`Splotch #${game.gamekey}\n\n${score}`, shareURL];
+  if (game.guesses.length > 5) {
+    score = `Score: ${game.guesses.length}`;
+  }
+
+  return [`Splotch #${game.gamekey}\n${score}`, shareURL];
 }
 
 export function ShareButton() {
@@ -150,6 +154,7 @@ export function ShareButton() {
       <button
         onClick={() => {
           const [text, url] = getShare(game);
+          console.log(text);
 
           try {
             navigator?.share({
