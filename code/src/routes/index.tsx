@@ -1,22 +1,27 @@
 import { GameProvider } from "../components/game/service";
-import { Board } from "../components/board/view";
+import { Board, InfoButton } from "../components/board/view";
 import { GameInfo } from "../components/game/view";
 import { ThemeToggler } from "../util/theme";
+import { InfoDialog, InfoDialogProvider } from "../components/info/view";
 
 export default function Home() {
   return (
     <>
-      <GameProvider>
-        <main class="p-4 justify-center items-center flex w-full">
-          <div class="w-96 flex flex-col space-y-4">
-            <div class="flex justify-between items-center">
-              <GameInfo />
-              <ThemeToggler />
+      <InfoDialogProvider>
+        <GameProvider>
+          <main class="p-4 justify-center items-center flex w-full">
+            <div class="w-96 flex flex-col space-y-4">
+              <div class="flex justify-between items-center">
+                <GameInfo />
+                <ThemeToggler />
+                <InfoButton />
+              </div>
+              <Board />
+              <InfoDialog />
             </div>
-            <Board />
-          </div>
-        </main>
-      </GameProvider>
+          </main>
+        </GameProvider>
+      </InfoDialogProvider>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { mix } from "../../util/colors";
 import { Game, useGame } from "../game/service";
+import { useInfoDialog } from "../info/view";
 
 export function Board() {
   const [game, _] = useGame();
@@ -117,7 +118,11 @@ export function Buttons() {
 
   const gameOver = () => !!game.guesses?.find((g) => g == game.numcorrect);
 
-  return <>{gameOver() ? <ShareButton /> : <SubmitButton />}</>;
+  return (
+    <div class="flex flex-col space-y-2">
+      {gameOver() ? <ShareButton /> : <SubmitButton />}
+    </div>
+  );
 }
 
 function getShare(game: Game) {
@@ -146,6 +151,25 @@ function getShare(game: Game) {
   return [`Splotch #${game.gamekey}\n${score}`, shareURL];
 }
 
+export function InfoButton() {
+  const [game, _] = useGame();
+  const [__, { open }] = useInfoDialog();
+
+  return (
+    <div class="w-full">
+      <button
+        onClick={() => {
+          open();
+        }}
+        class="w-full rounded-md p-2 text-woodsmoke-50 dark:text-woodsmoke-950 dark:bg-dove-200 bg-dove-800"
+        id="info"
+      >
+        Info
+      </button>
+    </div>
+  );
+}
+
 export function ShareButton() {
   const [game, _] = useGame();
 
@@ -154,7 +178,6 @@ export function ShareButton() {
       <button
         onClick={() => {
           const [text, url] = getShare(game);
-          console.log(text);
 
           try {
             navigator?.share({

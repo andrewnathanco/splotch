@@ -28,7 +28,7 @@ export function GameInfo() {
           </div>
         </div>
       </div>
-      <div class="font-medium">Find the ingredients for the color.</div>
+      <div class="font-light">Find the ingredients for the color.</div>
     </div>
   );
 }
