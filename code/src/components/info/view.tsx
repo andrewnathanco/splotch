@@ -57,13 +57,7 @@ export function useInfoDialog(): InfoDialog {
 }
 
 export function InfoDialog() {
-  const [isOpen, { open, close }] = useInfoDialog();
-
-  // createEffect(() => {
-  //   setInterval(() => {
-  //     set_countdown(get_countdown_till_next_game());
-  //   }, 1000);
-  // });
+  const [isOpen, { close }] = useInfoDialog();
 
   return (
     <div
@@ -73,8 +67,11 @@ export function InfoDialog() {
       }}
     >
       <div class="z-10 absolute top-0 left-0 right-0 bottom-0 justify-center items-center bg-black flex opacity-70"></div>
-      <div class="z-20 absolute top-0 bottom-0 bg-sun-50 flex w-96 rounded-lg p-2 m-4">
-        <div id="dialog-content" class="p-8 flex flex-col space-y-2 w-full">
+      <div class="z-20 absolute top-0 left-0 right-0 rounded-lg md:mx-auto m-4 md:w-96">
+        <div
+          id="dialog-content"
+          class="p-8 flex flex-col space-y-2 w-full rounded-lg"
+        >
           <div
             id="dialog-header"
             class="flex justify-between items-center text-3xl w-full"

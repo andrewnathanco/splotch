@@ -9,15 +9,15 @@ export default function Home() {
     <>
       <InfoDialogProvider>
         <GameProvider>
-          <main class="p-4 justify-center items-center flex w-full">
-            <div class="w-96 flex flex-col space-y-4">
+          <main class="p-4 justify-center items-center flex flex-col">
+            <InfoDialog />
+            <div class="p-4 w-96 flex flex-col space-y-4">
               <div class="flex justify-between items-center">
                 <GameInfo />
                 <ThemeToggler />
                 <InfoButton />
               </div>
               <Board />
-              <InfoDialog />
             </div>
           </main>
         </GameProvider>
