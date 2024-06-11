@@ -72,7 +72,8 @@ export function InfoDialog() {
         block: isOpen.dialog_status,
       }}
     >
-      <div class="z-20 absolute top-0 left-0 right-0 bottom-0 bg-sun-50 flex m-4 rounded-lg">
+      <div class="z-10 absolute top-0 left-0 right-0 bottom-0 justify-center items-center bg-black flex opacity-70"></div>
+      <div class="z-20 absolute top-0 bottom-0 bg-sun-50 flex w-96 rounded-lg p-2 m-4">
         <div id="dialog-content" class="p-8 flex flex-col space-y-2 w-full">
           <div
             id="dialog-header"
