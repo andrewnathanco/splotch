@@ -2,6 +2,7 @@ import { makePersisted } from "@solid-primitives/storage";
 import { createContext, useContext } from "solid-js";
 import { SetStoreFunction, createStore } from "solid-js/store";
 import { options } from "../../util/colors";
+import { baseVersion } from "./view";
 
 export interface Game {
   version: string;
@@ -35,7 +36,7 @@ export function today(gamekey: number): Game {
   const { base, correct, all } = options(gamekey, numcorrect, 16, noise);
 
   return {
-    version: import.meta.env.VITE_VERSION ?? "v0.1.0",
+    version: import.meta.env.VITE_VERSION ?? baseVersion,
     gamekey,
     guesses: new Array(allowedguesses).fill(-1),
     allowedguesses,
