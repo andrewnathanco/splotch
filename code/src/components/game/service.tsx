@@ -4,13 +4,17 @@ import { SetStoreFunction, createStore } from "solid-js/store";
 import { options } from "../../util/colors";
 
 export interface Game {
+  version: string;
   gamekey: number;
+  guess: number;
   numcorrect: number;
+  allowedguesses: number;
   color: string;
   ingredients: string[];
   correct: string[];
   all: string[];
   selected: string[];
+  chosen: string[];
   guesses: number[];
 }
 
@@ -26,13 +30,18 @@ export function gamekey() {
 
 export function today(gamekey: number): Game {
   const numcorrect = 3;
+  const allowedguesses = 5;
   const noise = 0.8;
   const { base, correct, all } = options(gamekey, numcorrect, 16, noise);
 
   return {
+    version: import.meta.env.VITE_VERSION ?? "v0.1.0",
     gamekey,
-    guesses: [],
+    guesses: new Array(allowedguesses).fill(-1),
+    allowedguesses,
+    guess: 0,
     correct: [],
+    chosen: [],
     color: base,
     ingredients: correct,
     numcorrect,

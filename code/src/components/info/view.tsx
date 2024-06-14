@@ -114,18 +114,22 @@ export function InfoDialog() {
                 </div>
               </div>
               <div class="flex flex-col space-y-2">
-                <ul class="flex space-x-8">
-                  <li class="flex flex-col space-y-2 items-center">
+                <ul class="flex flex-wrap gap-2">
+                  <li class="flex flex-col space-y-2 items-center w-fit">
                     <div class="h-20 w-20 border-8 border-woodsmoke-600 bg-woodsmoke-600 rounded-md"></div>
                     <div>Selected</div>
                   </li>
-                  <li class="flex flex-col space-y-2 items-center">
+                  <li class="flex flex-col space-y-2 items-center w-fit">
                     <div class="h-20 w-20 border-8 border-woodsmoke-600 bg-woodsmoke-600 rounded-md shrink-lg"></div>
                     <div>Unselected</div>
                   </li>
-                  <li class="flex flex-col space-y-2 items-center">
+                  <li class="flex flex-col space-y-2 items-center w-fit">
                     <div class="h-20 w-20 border-8 border-woodsmoke-600 rounded-md"></div>
                     <div>Correct</div>
+                  </li>
+                  <li class="flex flex-col space-y-2 items-center w-fit">
+                    <div class="h-20 w-20 border-8 bg-woodsmoke-600 border-woodsmoke-600 rounded-full"></div>
+                    <div>Chosen</div>
                   </li>
                 </ul>
               </div>

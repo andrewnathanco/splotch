@@ -3,9 +3,6 @@ import { gamekey, today, useGame } from "./service";
 
 export function GameInfo() {
   const [game, setGame] = useGame();
-  const [version, __] = createSignal<string>(
-    import.meta.env.VITE_VERSION ?? "v0.1.0"
-  );
 
   createEffect(() => {
     if (game.gamekey && game.gamekey != gamekey()) {
@@ -24,7 +21,7 @@ export function GameInfo() {
             id="game-version"
             class="font-semibold w-min h-min dark:text-gray-200 text-xs border-2 px-1 dark:border-gray-200 rounded-lg border-black text-black"
           >
-            {version()}
+            {game.version}
           </div>
         </div>
       </div>

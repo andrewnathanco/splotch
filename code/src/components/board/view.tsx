@@ -29,9 +29,11 @@ export function Colors() {
           {game.all?.map((color) => {
             const isSelected = game?.selected?.includes(color);
             const isCorrect = game.correct?.includes(color);
-            const gameOver = game?.guesses?.find(
-              (guess) => guess == game.numcorrect
-            );
+            const wasChosen = game.chosen?.includes(color);
+
+            const gameOver =
+              game?.guesses?.find((guess) => guess == game.numcorrect) ||
+              game?.guess == game.allowedguesses;
             const canSelect = game.selected?.length < game.numcorrect;
 
             return (
@@ -63,10 +65,12 @@ export function Colors() {
                   "border-color": isCorrect ? color : "transparent",
                 }}
                 classList={{
+                  "rounded-full": wasChosen,
+                  "rounded-md": !wasChosen,
                   "cursor-pointer": !gameOver,
                   "shrink-lg": !!game.selected?.length && !isSelected,
                 }}
-                class="h-20 w-20 cursor-pointer color border-8 rounded-md"
+                class="h-20 w-20 cursor-pointer color border-8"
                 id={`c${color.substring(1)}`}
               ></li>
             );
@@ -89,6 +93,7 @@ export function Correct() {
 
 export function Guesses() {
   const [game, setGame] = useGame();
+
   return (
     <ul class="flex space-x-2 justify-center">
       {game.guesses?.map((guess) => {
@@ -96,6 +101,7 @@ export function Guesses() {
           <li
             class="h-6 w-4 rounded-full"
             classList={{
+              "dark:bg-dove-300 bg-dove-500": guess == -1,
               "dark:bg-killarney-500 bg-killarney-700":
                 guess == game.numcorrect,
               "dark:bg-thorns-500 bg-thorns-700": guess == 0,
@@ -109,14 +115,12 @@ export function Guesses() {
   );
 }
 
-export function Guess() {
-  return <div class="h-4 w-4 bg-gray-500 rounded-full"></div>;
-}
-
 export function Buttons() {
   const [game, _] = useGame();
 
-  const gameOver = () => !!game.guesses?.find((g) => g == game.numcorrect);
+  const gameOver = () =>
+    !!game.guesses?.find((g) => g == game.numcorrect) ||
+    game.guess >= game.allowedguesses;
 
   return (
     <div class="flex flex-col space-y-2">
@@ -200,7 +204,9 @@ export function ShareButton() {
 export function SubmitButton() {
   const [game, setGame] = useGame();
 
-  const canSubmit = () => game?.selected?.length == game.numcorrect;
+  const canSubmit = () =>
+    game?.selected?.length == game.numcorrect &&
+    game.guess <= game.allowedguesses;
 
   return (
     <div class="w-full">
@@ -208,6 +214,8 @@ export function SubmitButton() {
         onClick={() => {
           let correct = 0;
           game?.selected?.forEach((color) => {
+            setGame("chosen", [...game.chosen, color]);
+
             if (game?.ingredients.includes(color)) {
               if (!game.correct.includes(color)) {
                 setGame("correct", [...game?.correct, color]);
@@ -217,11 +225,22 @@ export function SubmitButton() {
             }
           });
 
-          setGame("guesses", [...game?.guesses, correct]);
+          let guesses = [...game.guesses];
+          guesses[game.guess] = correct;
+
+          // update the current guess
+          setGame("guesses", [...guesses]);
+          setGame("guess", ++game.guess);
+
+          // update the selected
           setGame(
             "selected",
             game.selected.filter((sel) => game.ingredients.includes(sel))
           );
+
+          if (game.guess == game.allowedguesses) {
+            setGame("selected", [...game.ingredients]);
+          }
         }}
         disabled={!canSubmit()}
         classList={{
