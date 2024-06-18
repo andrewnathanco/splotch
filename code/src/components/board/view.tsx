@@ -4,17 +4,24 @@ import { useInfoDialog } from "../info/view";
 
 export function Board() {
   const [game, _] = useGame();
+
+  const showGuesses = () => game.guesses.length == 0;
+  const gameOver = () =>
+    !!game.guesses?.find((g) => g == game.numcorrect) ||
+    game.guess >= game.allowedguesses;
+  const showAverage = () => game?.correct?.length >= 1 && !gameOver();
+
   return (
     <div class="flex flex-col space-y-4">
-      <div class="flex space-x-2">
+      <div class="flex space-x-1">
         <div
           style={{ "background-color": game?.color }}
-          class="flex-1 w-full rounded-md h-24"
+          class="flex-1 w-full rounded-md h-24 text-center"
         ></div>
-        {game?.correct?.length >= 1 ? <Correct /> : <></>}
+        {showAverage() ? <Average /> : <></>}
       </div>
       <Colors />
-      {game.guesses.length == 0 ? <></> : <Guesses />}
+      {showGuesses() ? <></> : <Guesses />}
       <Buttons />
     </div>
   );
@@ -81,8 +88,8 @@ export function Colors() {
   );
 }
 
-export function Correct() {
-  const [game, setGame] = useGame();
+export function Average() {
+  const [game, _] = useGame();
 
   const color = () => mix(game.correct || "");
 
@@ -152,7 +159,7 @@ function getShare(game: Game) {
     score = `Score: ${game.guesses.length}`;
   }
 
-  return [`Splotch #${game.gamekey}\n${score}`, shareURL];
+  return [`Splotch #${game.gamekey}\n\n${score}`, shareURL];
 }
 
 export function InfoButton() {
@@ -177,6 +184,9 @@ export function InfoButton() {
 export function ShareButton() {
   const [game, _] = useGame();
 
+  const gameWon = () =>
+    game.guesses[game.guesses.length - 1] == game.numcorrect;
+
   return (
     <div class="w-full">
       <button
@@ -192,7 +202,11 @@ export function ShareButton() {
             navigator?.clipboard?.writeText(`${text}\n${url}`);
           }
         }}
-        class="w-full rounded-md p-4 text-woodsmoke-50 dark:text-woodsmoke-950 dark:bg-killarney-500 bg-killarney-600"
+        classList={{
+          "dark:bg-killarney-500 bg-killarney-700": gameWon(),
+          "dark:bg-thorns-500 bg-thorns-700": !gameWon(),
+        }}
+        class="w-full rounded-md p-4 text-woodsmoke-50 dark:text-woodsmoke-950"
         id="submit"
       >
         Share
@@ -228,18 +242,28 @@ export function SubmitButton() {
           let guesses = [...game.guesses];
           guesses[game.guess] = correct;
 
-          // update the current guess
+          // handle the guess
           setGame("guesses", [...guesses]);
           setGame("guess", ++game.guess);
 
-          // update the selected
-          setGame(
-            "selected",
-            game.selected.filter((sel) => game.ingredients.includes(sel))
-          );
-
+          // if we've maxed out our guesses then we want to show the one's that are correct
           if (game.guess == game.allowedguesses) {
             setGame("selected", [...game.ingredients]);
+            setGame("correct", [...game.ingredients]);
+          } else {
+            // only keep the one's we got right
+            setGame(
+              "selected",
+              game.selected.filter((sel) => game.ingredients.includes(sel))
+            );
+          }
+
+          // if we get them all correct update the number of guesses
+          if (correct == game.numcorrect) {
+            setGame(
+              "guesses",
+              guesses.filter((_, i) => i < game.guess)
+            );
           }
         }}
         disabled={!canSubmit()}
