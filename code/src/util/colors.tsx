@@ -183,6 +183,7 @@ function randomColor(rng: PRNG, shrink: number): string {
   let opts = rangetop - rangebottom;
 
   let r = Math.floor(rangebottom + rng() * opts);
+  r = 20;
   let b = Math.floor(rangebottom + rng() * opts);
   let g = Math.floor(rangebottom + rng() * opts);
 
@@ -212,7 +213,6 @@ function options(
   const todayColor = randomColor(rng, variance);
 
   const colOpt: ("r" | "g" | "b")[] = ["r", "g", "b"];
-  const options: string[] = [];
   const correctColors = divide(rng, todayColor, numCorrect);
   const all = [...correctColors];
 

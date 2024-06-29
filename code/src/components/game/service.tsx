@@ -30,10 +30,17 @@ export function gamekey() {
 }
 
 export function today(gamekey: number): Game {
-  const numcorrect = 3;
-  const allowedguesses = 5;
-  const noise = 0.8;
-  const { base, correct, all } = options(gamekey, numcorrect, 16, noise);
+  const numcorrect = 4;
+  const allowedguesses = 10;
+  const noise = 0.9;
+  const variance = 250;
+  const { base, correct, all } = options(
+    gamekey,
+    numcorrect,
+    16,
+    noise,
+    variance
+  );
 
   return {
     version: import.meta.env.VITE_VERSION ?? baseVersion,

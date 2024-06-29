@@ -5,7 +5,6 @@ import { useInfoDialog } from "../info/view";
 export function Board() {
   const [game, _] = useGame();
 
-  const showGuesses = () => game.guesses.length == 0;
   const gameOver = () =>
     !!game.guesses?.find((g) => g == game.numcorrect) ||
     game.guess >= game.allowedguesses;
@@ -21,7 +20,6 @@ export function Board() {
         {showAverage() ? <Average /> : <></>}
       </div>
       <Colors />
-      {showGuesses() ? <></> : <Guesses />}
       <Buttons />
     </div>
   );
@@ -140,24 +138,7 @@ function getShare(game: Game) {
   const shareURL = `${import.meta.env.VITE_BASE_URL}`;
 
   let score = "";
-
-  game.guesses.forEach((guess) => {
-    switch (guess) {
-      case 0:
-        score += "🟥";
-        break;
-      case game.numcorrect:
-        score += "🟩";
-        break;
-      default:
-        score += "🟨";
-        break;
-    }
-  });
-
-  if (game.guesses.length > 5) {
-    score = `Score: ${game.guesses.length}`;
-  }
+  score = `Score: ${game.chosen.length}`;
 
   return [`Splotch #${game.gamekey}\n\n${score}`, shareURL];
 }

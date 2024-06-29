@@ -104,6 +104,13 @@ export function InfoDialog() {
                 colors that average up to another color.
               </div>
             </div>
+            <div class="flex flex-col">
+              <div class="text-xl">Scoring</div>
+              <div class="text-md font-light">
+                You get scored by the number of colors you've guessed. The lower
+                the better.
+              </div>
+            </div>
             <div class="flex flex-col space-y-4">
               <div class="flex flex-col">
                 <div class="text-xl">Tiles</div>
