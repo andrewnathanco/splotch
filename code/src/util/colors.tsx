@@ -182,11 +182,24 @@ function randomColor(rng: PRNG, shrink: number): string {
   let rangebottom = 0 + shrink;
   let opts = rangetop - rangebottom;
 
+  let colorIndex = Math.floor(rng() * 3);
   let r = Math.floor(rangebottom + rng() * opts);
-  r = 20;
   let b = Math.floor(rangebottom + rng() * opts);
   let g = Math.floor(rangebottom + rng() * opts);
 
+  switch (colorIndex) {
+    case 1:
+      r = Math.floor(0 + rng() * 50);
+      break;
+    case 2:
+      b = Math.floor(0 + rng() * 50);
+      break;
+    case 3:
+      g = Math.floor(0 + rng() * 50);
+      break;
+  }
+
+  console.log({ r, g, b });
   return rgbToHex({
     r,
     g,

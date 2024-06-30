@@ -22,18 +22,21 @@ export interface Game {
 export function gamekey() {
   const now: Date = new Date();
   // starting date
-  const specificDate: Date = new Date(2024, 4, 24, 0, 0, 0);
-  const duration: number =
-    (now.getTime() - specificDate.getTime()) / (1000 * 60 * 60 * 24);
+  const firstGame: Date = new Date(2024, 4, 24, 0, 0, 0);
+  const estOffset = -5 * 60; // EST is UTC-5 hours
+  const estDate = new Date(firstGame.getTime() + estOffset * 60 * 1000);
 
-  return Math.floor(duration);
+  const duration: number =
+    (now.getTime() - firstGame.getTime()) / (1000 * 60 * 60 * 24);
+
+  return duration;
 }
 
 export function today(gamekey: number): Game {
-  const numcorrect = 4;
-  const allowedguesses = 10;
+  const numcorrect = 3;
+  const allowedguesses = 100;
   const noise = 0.9;
-  const variance = 250;
+  const variance = 255;
   const { base, correct, all } = options(
     gamekey,
     numcorrect,
