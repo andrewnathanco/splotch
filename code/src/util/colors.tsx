@@ -189,17 +189,16 @@ function randomColor(rng: PRNG, shrink: number): string {
 
   switch (colorIndex) {
     case 1:
-      r = Math.floor(0 + rng() * 50);
+      r = Math.floor(0 + rng() * 75);
       break;
     case 2:
-      b = Math.floor(0 + rng() * 50);
+      b = Math.floor(0 + rng() * 75);
       break;
     case 3:
-      g = Math.floor(0 + rng() * 50);
+      g = Math.floor(0 + rng() * 75);
       break;
   }
 
-  console.log({ r, g, b });
   return rgbToHex({
     r,
     g,
@@ -222,6 +221,7 @@ function options(
 ): GameData {
   noise = Math.ceil(noise * 255);
 
+  console.log(gameKey.toString());
   const rng = seedrandom(gameKey.toString());
   const todayColor = randomColor(rng, variance);
 

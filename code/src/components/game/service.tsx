@@ -24,12 +24,13 @@ export function gamekey() {
   // starting date
   const firstGame: Date = new Date(2024, 4, 24, 0, 0, 0);
   const estOffset = -5 * 60; // EST is UTC-5 hours
-  const estDate = new Date(firstGame.getTime() + estOffset * 60 * 1000);
+  const estFirstGame = new Date(firstGame.getTime() + estOffset * 60 * 1000);
 
   const duration: number =
-    (now.getTime() - firstGame.getTime()) / (1000 * 60 * 60 * 24);
+    (now.getTime() - estFirstGame.getTime()) / (1000 * 60 * 60 * 24);
 
-  return duration;
+  // return duration;
+  return Math.floor(duration);
 }
 
 export function today(gamekey: number): Game {

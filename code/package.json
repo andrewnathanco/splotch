@@ -1,5 +1,5 @@
 {
-  "name": "example-with-tailwindcss",
+  "name": "splotch",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",

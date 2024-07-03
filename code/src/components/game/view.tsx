@@ -20,29 +20,29 @@ export function GameInfo() {
     import.meta.env.VITE_VERSION ?? baseVersion
   );
 
-  createEffect(() => {
-    if (game.gamekey && (import.meta.env.VITE_VERSION ?? baseVersion)) {
-      const newGame = game.gamekey && game.gamekey != gamekey();
+  // createEffect(() => {
+  //   if (game.gamekey && (import.meta.env.VITE_VERSION ?? baseVersion)) {
+  //     const newGame = game.gamekey && game.gamekey != gamekey();
 
-      const [currentMajor, currentMinor] = parseVersion(game.version);
-      const [envMajor, envMinor] = parseVersion(
-        import.meta.env.VITE_VERSION ?? baseVersion
-      );
+  //     const [currentMajor, currentMinor] = parseVersion(game.version);
+  //     const [envMajor, envMinor] = parseVersion(
+  //       import.meta.env.VITE_VERSION ?? baseVersion
+  //     );
 
-      const newMajorMinorVersion =
-        currentMajor !== envMajor || currentMinor !== envMinor;
+  //     const newMajorMinorVersion =
+  //       currentMajor !== envMajor || currentMinor !== envMinor;
 
-      if (newGame || newMajorMinorVersion) {
-        localStorage.removeItem("splotch_game");
-        setGame(today(gamekey()));
-      }
+  //     if (newGame || newMajorMinorVersion) {
+  //       localStorage.removeItem("splotch_game");
+  //       setGame(today(gamekey()));
+  //     }
 
-      if (newMajorMinorVersion) {
-        localStorage.removeItem("splotch_info");
-        open();
-      }
-    }
-  });
+  //     if (newMajorMinorVersion) {
+  //       localStorage.removeItem("splotch_info");
+  //       open();
+  //     }
+  //   }
+  // });
 
   return (
     <div class="flex flex-col">
