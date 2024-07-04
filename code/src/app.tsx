@@ -11,7 +11,7 @@ export default function App() {
       root={(props) => (
         <>
           <MetaProvider>
-            <Title>Splotch</Title>
+            <Title>New Splotch</Title>
             <Suspense>{props.children}</Suspense>
           </MetaProvider>
         </>

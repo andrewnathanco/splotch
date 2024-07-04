@@ -7,27 +7,16 @@ import { createSignal } from "solid-js";
 
 function RefreshButton() {
   const [_, setGame] = useGame();
-  const [gamekey, setGameKey] = createSignal(1);
 
   return (
     <div class="flex space-x-2">
       <button
-        class="rounded-lg p-2 bg-gray-200 text-black"
+        class="rounded-lg p-2 bg-gray-200 text-black w-full"
         onClick={() => {
-          setGameKey(gamekey() + 1);
-          setGame(today(gamekey()));
+          setGame(today(Math.floor(Math.random() * 3000)));
         }}
       >
-        up
-      </button>
-      <button
-        class="rounded-lg p-2 bg-gray-200 text-black"
-        onClick={() => {
-          setGameKey(gamekey() - 1);
-          setGame(today(gamekey()));
-        }}
-      >
-        down
+        random
       </button>
     </div>
   );

@@ -32,7 +32,7 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ github.ref_name }}
-            BASE_URL=https://ancgames.com/splotch
-            BASE_PATH=/splotch
+            BASE_URL=https://ancgames.com/new-splotch
+            BASE_PATH=/new-splotch
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

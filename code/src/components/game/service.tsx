@@ -69,7 +69,7 @@ const GameContext = createContext<[Game, SetStoreFunction<Game>]>([
 
 export function GameProvider(props: any) {
   let value = makePersisted(createStore(today(gamekey())), {
-    name: "splotch_game",
+    name: "splotch_new_game",
   });
 
   return (
